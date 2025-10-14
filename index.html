@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacktoberfest</title>
+    <link rel="icon" type="image/png" href="logo.png">  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+   <style>
+        /* General Styling */
+        :root {
+            --bg-color: #0d1117;
+            --primary-color: #ff8c00;
+            --text-color: #c9d1d9;
+            --border-color: #30363d;
+            --card-bg: #161b22;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* Pre-loader Styles */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.75s ease, visibility 0.75s ease;
+        }
+
+        #preloader.loader-hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #preloader img {
+            width: 150px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.7; }
+        }
+
+        /* Navigation Header */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 5%;
+            background: rgba(13, 17, 23, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            transition: top 0.3s;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 12px;
+            border-radius: 50%;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .hamburger-menu span {
+            width: 100%;
+            height: 3px;
+            background-color: var(--text-color);
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
+            transform-origin: center;
+        }
+
+        .hamburger-menu.active span:nth-child(1) {
+            transform: translateY(11px) rotate(45deg);
+        }
+        .hamburger-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger-menu.active span:nth-child(3) {
+            transform: translateY(-11px) rotate(-45deg);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
+        }
+
+        /* Hero Header Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(13, 17, 23, 0.6);
+            z-index: 1;
+        }
+        
+        .particles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            bottom: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            animation: float linear infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 800px;
+            z-index: 3;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: var(--text-color);
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .time-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(5px);
+            width: 100px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .time-box:hover {
+            transform: translateY(-10px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        #countdown-message {
+            font-size: 1.5rem; color: #fff; font-weight: 600;
+        }
+        
+        .scroll-down {
+            position: absolute;
+            bottom: 30px; 
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4; color: #fff; font-size: 2.5rem; text-decoration: none;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-20px); }
+            60% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .btn {
+            display: inline-block;
+            color: #fff;
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.4s ease, background-color 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+        }
+        
+        .hero-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .hero-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .animated-section {
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .scroll-animated {
+            opacity: 0;
+            transform: translateY(70px);
+            transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .scroll-animated.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 2.5rem; margin-bottom: 50px; position: relative; display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            width: 60%; height: 4px;
+            background: var(--primary-color);
+            position: absolute; bottom: -10px; left: 50%;
+            transform: translateX(-50%); border-radius: 2px;
+        }
+        .event-container {
+            display: grid; grid-template-columns: 1fr;
+            gap: 30px; max-width: 1000px; margin: 0 auto;
+        }
+        
+        @media (min-width: 768px) {
+            .event-container { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .event-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px; 
+            padding: 30px;
+            display: flex; 
+            flex-direction: column;
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .card-content { flex-grow: 1; }
+        
+        .event-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .card-icon {
+            font-size: 3rem; margin-bottom: 15px;
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            color: var(--primary-color);
+        }
+        
+        .event-card:hover .card-icon {
+            transform: rotateY(360deg) scale(1.2);
+        }
+
+        .card-title {
+            font-size: 1.5rem; margin-bottom: 10px; color: #fff;
+        }
+
+        .card-description { font-size: 1rem; }
+        
+        .btn-details {
+            background-color: transparent;
+            color: var(--primary-color);
+            padding: 10px 25px;
+            align-self: center;
+            border: 1px solid var(--primary-color);
+            margin-top: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            cursor: pointer;
+        }
+        .btn-details:hover {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+        }
+        
+        .site-footer {
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 40px 20px;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: #6a737d;
+            text-align: center;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            z-index: 1002;
+            width: 90%;
+            max-width: 700px;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .modal-content {
+            padding: 30px;
+            max-height: 85vh;
+            overflow-y: auto;
+            text-align: left;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .modal-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        .close-modal {
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 2.5rem;
+            color: var(--text-color);
+        }
+        .modal-body h4 {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .modal-body p, .modal-body li {
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .modal-body ul, .modal-body ol {
+            padding-left: 20px;
+        }
+        
+        .modal-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .coordinator-info {
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .btn-modal-register {
+            display: inline-block;
+            text-decoration: none;
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            font-weight: 600;
+            padding: 10px 25px;
+            border-radius: 50px;
+            border: 1px solid var(--primary-color);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .btn-modal-register:hover {
+            background-color: #ff9d23;
+            transform: translateY(-3px);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title { font-size: 3rem; }
+            .hero-subtitle { font-size: 1.2rem; }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 100%;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-color: var(--bg-color);
+                transition: right 0.5s ease-in-out;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links a {
+                font-size: 1.5rem;
+            }
+
+            .hamburger-menu {
+                display: flex;
+            }
+            
+            .countdown { flex-wrap: wrap; gap: 10px; }
+            .time-box { width: 80px; padding: 10px; }
+            .time-box span { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="preloader">
+        <img src="logo.png" alt="Loading...">
+    </div>
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <img src="logo1.png" alt="Digiflash Logo">
+                <span>Digiflash</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#events">Events</a></li>
+            </ul>
+            <button class="hamburger-menu" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+    <header class="hero">
+        <div class="particles" id="particles-container"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Hacktoberfest 2.0</h1>
+            <p class="hero-subtitle">Four Events. One Epic Celebration of Code.</p>
+            <div id="countdown" class="countdown">
+                <div class="time-box"><span id="days">00</span>Days</div>
+                <div class="time-box"><span id="hours">00</span>Hours</div>
+                <div class="time-box"><span id="minutes">00</span>Minutes</div>
+                <div class="time-box"><span id="seconds">00</span>Seconds</div>
+            </div>
+            <a href="#" class="btn hero-btn">Register for All Events &raquo;</a>
+        </div>
+        <a href="#events" class="scroll-down" aria-label="Scroll to events">&#8595;</a>
+    </header>
+
+    <main id="events" class="animated-section">
+        <h2 class="section-title scroll-animated">The Main Events</h2>
+        <div class="event-container">
+            <div class="event-card scroll-animated">
+                <div class="card-content">
+                    <div class="card-icon">🕸️</div>
+                    <h3 class="card-title">WebZilla 3.0</h3>
+                    <p class="card-description">An interactive competition to test your web design knowledge, creativity, and problem-solving skills.</p>
+                </div>
+                <button class="btn-details" data-modal-target="#webzilla-modal">View Details</button>
+            </div>
+            <div class="event-card scroll-animated">
+                <div class="card-content">
+                    <div class="card-icon">⏱️</div>
+                    <h3 class="card-title">Minutes to Win</h3>
+                    <p class="card-description">A thrilling individual competition with quick and engaging programming tasks against the clock.</p>
+                </div>
+                <button class="btn-details" data-modal-target="#minute-modal">View Details</button>
+            </div>
+            <div class="event-card scroll-animated">
+                <div class="card-content">
+                    <div class="card-icon">🧗</div>
+                    <h3 class="card-title">Grab, Solve, Climb</h3>
+                    <p class="card-description">A thrilling 3-round competition that blends quick thinking, teamwork, and strategy to reach the top.</p>
+                </div>
+                <button class="btn-details" data-modal-target="#grab-modal">View Details</button>
+            </div>
+            <div class="event-card scroll-animated">
+                <div class="card-content">
+                    <div class="card-icon">🎲</div>
+                    <h3 class="card-title">Dice of Destiny</h3>
+                    <p class="card-description">A fun-filled team competition to test creativity, quick thinking, and courage under pressure.</p>
+                </div>
+                <button class="btn-details" data-modal-target="#dice-modal">View Details</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer animated-section">
+        <div class="scroll-animated">
+            <p class="copyright">© 2025 DigiFlash. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <div class="modal" id="webzilla-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">WebZilla 3.0</h3>
+                <button class="close-modal" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h4>Abstract</h4>
+                <p>WebZilla 3.0 is a creative and intellectually stimulating team event crafted to test participants’ web design knowledge, coding proficiency, and problem-solving skills. Conducted in two challenging rounds — Design Quiz and Web Rebuild Challenge — the event encourages teams to apply both theory and practice. Competitors must think critically, collaborate efficiently, and deliver functional web solutions under strict time limits. WebZilla 3.0 celebrates innovation, teamwork, and technical excellence in modern web development.</p>
+            </div>
+            <div class="modal-footer">
+                <p class="coordinator-info">Coordinator: Ms. Pavithra (+91 98765 43210)</p>
+                <a href="#" class="btn-modal-register">Register Now</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="minute-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Minutes to Win</h3>
+                <button class="close-modal" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h4>Abstract</h4>
+                <p>Minutes to Win – Coding Challenge is a high-paced individual event focused on testing coding accuracy, logic, and performance under time pressure. Spanning three rounds — Technical Riddles, Shuffle Sheets, and Task Trio — the competition evaluates participants’ problem-solving ability, code organization, and execution speed. Designed for passionate coders, it offers a platform to demonstrate programming skills, quick thinking, and composure in challenging time-bound situations.</p>
+                
+            </div>
+            <div class="modal-footer">
+                <p class="coordinator-info">Coordinator: Mr. Santharam (+91 98765 43210)</p>
+                <a href="#" class="btn-modal-register">Register Now</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="grab-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Grab, Solve, Climb</h3>
+                <button class="close-modal" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h4>Abstract</h4>
+                <p>Grab, Solve, Climb is a dynamic three-round team competition designed to challenge participants’ mental agility, logical reasoning, and teamwork. The event unfolds through progressively intense stages — from answering rapid-fire questions to solving puzzles and culminating in an interactive quiz-based Snake & Ladder game. Each round tests quick thinking, strategy, and coordination under time constraints. The competition encourages collaboration and sharp intellect, rewarding the most strategic and alert teams that successfully climb their way to the top.</p>
+            </div>
+            <div class="modal-footer">
+                <p class="coordinator-info">Coordinator: Mr. Kannan (+91 98765 43210)</p>
+                <a href="#" class="btn-modal-register">Register Now</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="dice-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Dice of Destiny</h3>
+                <button class="close-modal" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h4>Abstract</h4>
+                <p>Dice of Destiny is an engaging and unpredictable team event that blends creativity, improvisation, and daring challenges. Spread across three thrilling rounds — Movie Clues Swap, Sell the Property, and Dice of Destiny — the competition pushes participants to think fast, act confidently, and embrace spontaneity. Every dice roll determines fate, bringing new twists and challenges. With a mix of fun, performance, and audience engagement, the event promises laughter, excitement, and unforgettable moments as teams battle for victory.</p>
+            </div>
+            <div class="modal-footer">
+                <p class="coordinator-info">Coordinator: Mr. Santhosh (+91 98765 43210)</p>
+                <a href="#" class="btn-modal-register">Register Now</a>
+            </div>
+        </div>
+    </div>
+    
+    <div id="modal-overlay" class="modal-overlay"></div>
+
+    <script>
+        window.onload = () => {
+            // --- PRE-LOADER SCRIPT ---
+            const preloader = document.getElementById('preloader');
+            if(preloader) {
+                setTimeout(() => {
+                    preloader.classList.add('loader-hidden');
+                }, 3000);
+            }
+
+            // --- MOBILE NAVIGATION SCRIPT ---
+            const hamburger = document.querySelector('.hamburger-menu');
+            const navLinks = document.querySelector('.nav-links');
+
+            if (hamburger && navLinks) {
+                hamburger.addEventListener('click', () => {
+                    hamburger.classList.toggle('active');
+                    navLinks.classList.toggle('active');
+                });
+            }
+
+            // --- MODAL SCRIPT ---
+            const openModalButtons = document.querySelectorAll('[data-modal-target]');
+            const closeModalButtons = document.querySelectorAll('.close-modal');
+            const overlay = document.getElementById('modal-overlay');
+
+            const openModal = (modal) => {
+                if (modal == null) return;
+                modal.classList.add('active');
+                overlay.classList.add('active');
+                document.body.classList.add('modal-open');
+            }
+
+            const closeModal = (modal) => {
+                if (modal == null) return;
+                modal.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            }
+
+            openModalButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const modal = document.querySelector(button.dataset.modalTarget);
+                    openModal(modal);
+                });
+            });
+
+            overlay.addEventListener('click', () => {
+                const modals = document.querySelectorAll('.modal.active');
+                modals.forEach(modal => {
+                    closeModal(modal);
+                });
+            });
+
+            closeModalButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const modal = button.closest('.modal');
+                    closeModal(modal);
+                });
+            });
+            
+            // --- COUNTDOWN TIMER SCRIPT ---
+            const countDownDate = new Date("Oct 29, 2025 23:59:59").getTime();
+            const timerInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+                const format = (t) => t < 10 ? `0${t}` : t;
+
+                if (distance < 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById("countdown").innerHTML = "<div id='countdown-message'>The Event is Live!</div>";
+                    return;
+                }
+                
+                document.getElementById("days").innerText = format(Math.floor(distance / (1000 * 60 * 60 * 24)));
+                document.getElementById("hours").innerText = format(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+                document.getElementById("minutes").innerText = format(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
+                document.getElementById("seconds").innerText = format(Math.floor((distance % (1000 * 60)) / 1000));
+            }, 1000);
+
+            // --- SCROLL ANIMATION FOR ALL SECTIONS/CARDS ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            const elements = document.querySelectorAll('.scroll-animated');
+            elements.forEach((el, index) => {
+                el.style.transitionDelay = `${index * 100}ms`;
+                observer.observe(el);
+            });
+
+            // --- FLOATING PARTICLES SCRIPT ---
+            const container = document.getElementById('particles-container');
+            if (container) {
+                const particleCount = 50;
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('span');
+                    particle.classList.add('particle');
+                    const size = Math.random() * 8 + 2;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.left = `${Math.random() * 100}%`;
+                    const duration = Math.random() * 10 + 10;
+                    particle.style.animationDuration = `${duration}s`;
+                    const delay = Math.random() * 10;
+                    particle.style.animationDelay = `${delay}s`;
+                    container.appendChild(particle);
+                }
+            }
+        };
+    </script>
+</body>
+</html>
