@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hacktoberfest</title>
-    <link rel="icon" type="image/png" href="wbg.png">  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
    <style>
-        /* General Styling */
         :root {
             --bg-color: #0d1117;
             --primary-color: #ff8c00;
@@ -183,13 +183,17 @@
             text-align: center;
             padding: 40px 20px;
             overflow: hidden;
+            background-image: url('/overall.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         
         .hero::before {
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(13, 17, 23, 0.6);
+            background: rgba(13, 17, 23, 0.7);
             z-index: 1;
         }
         
@@ -343,13 +347,24 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 15px; 
-            padding: 30px;
+            padding: 0;
             display: flex; 
             flex-direction: column;
             transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            overflow: hidden;
         }
 
-        .card-content { flex-grow: 1; }
+        .card-poster {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .card-content { 
+            flex-grow: 1; 
+            padding: 30px;
+        }
         
         .event-card:hover {
             transform: translateY(-15px);
@@ -384,6 +399,7 @@
             border-radius: 50px;
             transition: background-color 0.3s ease, color 0.3s ease;
             cursor: pointer;
+            margin-bottom: 20px;
         }
         .btn-details:hover {
             background-color: var(--primary-color);
@@ -554,12 +570,12 @@
 </head>
 <body>
     <div id="preloader">
-        <img src="wbg.png" alt="Loading...">
+        <img src="logo.png" alt="Loading...">
     </div>
     <nav class="main-nav">
         <div class="nav-container">
             <a href="#" class="logo">
-                <img src="bg.jpg" alt="Digiflash Logo">
+                <img src="logo1.png" alt="Digiflash Logo">
                 <span>Digiflash</span>
             </a>
             <ul class="nav-links">
@@ -576,7 +592,7 @@
     <header class="hero">
         <div class="particles" id="particles-container"></div>
         <div class="hero-content">
-            <h1 class="hero-title">Hacktoberfest 2.0</h1>
+            <h1 class="hero-title">Hacktoberfest 2k25</h1>
             <p class="hero-subtitle">Four Events. One Epic Celebration of Code.</p>
             <div id="countdown" class="countdown">
                 <div class="time-box"><span id="days">00</span>Days</div>
@@ -584,7 +600,7 @@
                 <div class="time-box"><span id="minutes">00</span>Minutes</div>
                 <div class="time-box"><span id="seconds">00</span>Seconds</div>
             </div>
-            <a href="#events    " class="btn hero-btn">Register for All Events &raquo;</a>
+            <a href="#events" class="btn hero-btn">Register for All Events &raquo;</a>
         </div>
         <a href="#events" class="scroll-down" aria-label="Scroll to events">&#8595;</a>
     </header>
@@ -593,41 +609,44 @@
         <h2 class="section-title scroll-animated">The Main Events</h2>
         <div class="event-container">
             <div class="event-card scroll-animated">
+                <img src="pitch.png" alt="Pitch Your Thoughts Event" class="card-poster">
                 <div class="card-content">
                     <div class="card-icon">🕸️</div>
                     <h3 class="card-title">Pitch Your Thoughts</h3>
                     <p class="card-description">A dynamic paper presentation event where innovation meets expression, empowering minds to showcase groundbreaking ideas.</p>
+                    <button class="btn-details" data-modal-target="#webzilla-modal">View Details</button>
                 </div>
-                <button class="btn-details" data-modal-target="#webzilla-modal">View Details</button>
             </div>
             <div class="event-card scroll-animated">
+                <img src="minute.png" alt="Minute to Win Event" class="card-poster">
                 <div class="card-content">
                     <div class="card-icon">⏱️</div>
                     <h3 class="card-title">Minute to Win</h3>
                     <p class="card-description">A thrilling dual competition with quick and engaging programming tasks against the clock.</p>
+                    <button class="btn-details" data-modal-target="#minute-modal">View Details</button>
                 </div>
-                <button class="btn-details" data-modal-target="#minute-modal">View Details</button>
             </div>
             <div class="event-card scroll-animated">
+                <img src="grab.png" alt="Grab, Solve, Climb Event" class="card-poster">
                 <div class="card-content">
                     <div class="card-icon">🧗</div>
                     <h3 class="card-title">Grab, Solve, Climb</h3>
                     <p class="card-description">A thrilling 3-round competition that blends quick thinking, teamwork, and strategy to reach the top.</p>
+                    <button class="btn-details" data-modal-target="#grab-modal">View Details</button>
                 </div>
-                <button class="btn-details" data-modal-target="#grab-modal">View Details</button>
             </div>
             <div class="event-card scroll-animated">
+                <img src="dice.png" alt="Dice of Destiny Event" class="card-poster">
                 <div class="card-content">
                     <div class="card-icon">🎲</div>
                     <h3 class="card-title">Dice of Destiny</h3>
                     <p class="card-description">A fun-filled team competition to test creativity, quick thinking, and courage under pressure.</p>
+                    <button class="btn-details" data-modal-target="#dice-modal">View Details</button>
                 </div>
-                <button class="btn-details" data-modal-target="#dice-modal">View Details</button>
             </div>
         </div>
     </main>
-
-    <footer class="site-footer animated-section">
+     <footer class="site-footer animated-section">
         <div class="scroll-animated">
             <p class="copyright">© 2025 DigiFlash. All Rights Reserved.</p>
         </div>
@@ -641,12 +660,19 @@
             </div>
             <div class="modal-body">
                 <h4>Abstract</h4>
-                <p>Pitch Your Thoughts is a theme-based paper presentation competition designed to bring together innovative minds from diverse technical domains. This platform provides students and researchers with the opportunity to showcase their knowledge, creativity, and problem-solving skills through impactful research papers and technical presentations.
-The goal of Pitch Your Thoughts is to spark curiosity, encourage critical thinking, and promote knowledge sharing among budding innovators while bridging the gap between academia and real-world applications.</p>
-            </div>
+                <p>Ideas are the currency of the future. Pitch yours! A paper presentation event on emerging trends in technology.</p>
+                
+                <h4>Topics</h4>
+                <ul>
+                    <li>Artificial Intelligence</li>
+                    <li>Internet of Things</li>
+                    <li>Cloud Computing</li>
+                    <li>Blockchain</li>
+                    <li>Quantum Computing</li>
+                </ul></div>
             <div class="modal-footer">
                 <p class="coordinator-info">Coordinator: Ms.Samyuktha [8667452487]</p>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdiE2wTbV0TcEcMnlQsu5IUcjnTjM9R4Q2FTOb9fvwjOuIwPA/viewform" class="btn-modal-register">Register Now</a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdBMJq8IUJdl6EJPQCvk2-ECOJ-TFrBigVCIro7J3SsuQarbg/viewform?usp=publish-editor" class="btn-modal-register">Register Now</a>
             </div>
         </div>
     </div>
@@ -659,11 +685,11 @@ The goal of Pitch Your Thoughts is to spark curiosity, encourage critical thinki
             </div>
             <div class="modal-body">
                 <h4>Abstract</h4>
-                <p>Minutes to Win ⏱️ is a high-energy coding showdown designed to test your logic, speed, and wit. Get ready for mind-twisting puzzles, shuffled codes, and mysterious QR hunts that keep you guessing till the end. Every second counts as you decode challenges, outsmart the twists, and race against time. Expect surprises, dares, and pure coding adrenaline. It’s not just about coding — it’s about staying sharp under pressure. Step in, think fast, and prove you have what it takes to win every minute!</p>
+                <p>Minutes to Win ⏱️ is a high-energy coding showdown designed to test your logic, speed, and wit. Get ready for mind-twisting puzzles, shuffled codes, and mysterious QR hunts that keep you guessing till the end. Every second counts as you decode challenges, outsmart the twists, and race against time. Expect surprises, dares, and pure coding adrenaline. It's not just about coding — it's about staying sharp under pressure. Step in, think fast, and prove you have what it takes to win every minute!</p>
             </div>
             <div class="modal-footer">
                 <p class="coordinator-info">Coordinator: Mr. Santharam [8122606343]</p>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdcvXAoYXRXgUq_cW-vNaNnsoQSWwBdXdInlgj0P9PnmiANnQ/viewform?usp=dialog" class="btn-modal-register">Register Now</a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSc3Q1LxSiSVPRrOXxEaHBxhM_N6rkDPYTaEurWjuTQoLwZ1VA/viewform?usp=publish-editor" class="btn-modal-register">Register Now</a>
             </div>
         </div>
     </div>
@@ -676,11 +702,11 @@ The goal of Pitch Your Thoughts is to spark curiosity, encourage critical thinki
             </div>
             <div class="modal-body">
                 <h4>Abstract</h4>
-                <p>Grab, Solve, Climb is a dynamic three-round team competition designed to challenge participants’ mental agility, logical reasoning, and teamwork. The event unfolds through progressively intense stages — from answering rapid-fire questions to solving puzzles and culminating in an interactive quiz-based Snake & Ladder game. Each round tests quick thinking, strategy, and coordination under time constraints. The competition encourages collaboration and sharp intellect, rewarding the most strategic and alert teams that successfully climb their way to the top.</p>
+                <p>Grab, Solve, Climb is a dynamic three-round team competition designed to challenge participants' mental agility, logical reasoning, and teamwork. The event unfolds through progressively intense stages — from answering rapid-fire questions to solving puzzles and culminating in an interactive quiz-based Snake & Ladder game. Each round tests quick thinking, strategy, and coordination under time constraints. The competition encourages collaboration and sharp intellect, rewarding the most strategic and alert teams that successfully climb their way to the top.</p>
             </div>
             <div class="modal-footer">
-                <p class="coordinator-info">Coordinator: Mr. Sowmiya [9791339165] </p>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSesvBqxBeKI4bqgQwMHifSY93Srz4NhaAJLHL-VlKnTd8ziFw/viewform?usp=sharing&ouid=107931353456428986798" class="btn-modal-register">Register Now</a>
+                <p class="coordinator-info">Coordinator: Ms.Sowmiya [9791339165] </p>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSe6A356zzWKHQyHh8ahbmemSleyvDoA134zIh4KJDXG05k7pg/viewform?usp=publish-editor" class="btn-modal-register">Register Now</a>
             </div>
         </div>
     </div>
@@ -696,11 +722,12 @@ The goal of Pitch Your Thoughts is to spark curiosity, encourage critical thinki
                 <p>Dice of Destiny is an engaging and unpredictable team event that blends creativity, improvisation, and daring challenges. Spread across three thrilling rounds — Movie Clues Swap, Sell the Property, and Dice of Destiny — the competition pushes participants to think fast, act confidently, and embrace spontaneity. Every dice roll determines fate, bringing new twists and challenges. With a mix of fun, performance, and audience engagement, the event promises laughter, excitement, and unforgettable moments as teams battle for victory.</p>
             </div>
             <div class="modal-footer">
-                <p class="coordinator-info">Coordinator: Mr. Santhosh [9080333745]</p>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfboCg8iW4-xO_BBiG0eF02iog5V-SAfgGAmmy2mCxOekZzhQ/viewform?usp=publish-editor" class="btn-modal-register">Register Now</a>
+                <p class="coordinator-info">Coordinator: Mr. Santhosh Gunal[9080333745]</p>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdwCGg67XKoewDOBKhZRGJ_tkgkNGJwLsvAXBATp4dwRI1VDA/viewform?usp=publish-editor" class="btn-modal-register">Register Now</a>
             </div>
         </div>
     </div>
+    
     
     <div id="modal-overlay" class="modal-overlay"></div>
 
