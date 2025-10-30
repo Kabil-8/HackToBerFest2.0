@@ -3,19 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacktoberfest</title>
+    <title>Hacktoberfest 2025 | Digiflash</title>
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-   <style>
+    <style>
         :root {
             --bg-color: #0d1117;
             --primary-color: #ff8c00;
+            --secondary-color: #ff9d23;
+            --accent-color: #ff6b00;
             --text-color: #c9d1d9;
+            --light-text: #f0f6fc;
             --border-color: #30363d;
             --card-bg: #161b22;
+            --card-hover: #1c2128;
+            --gradient: linear-gradient(135deg, #ff8c00 0%, #ff6b00 100%);
+            --gradient-light: linear-gradient(135deg, rgba(255, 140, 0, 0.1) 0%, rgba(255, 107, 0, 0.1) 100%);
         }
 
         * {
@@ -35,6 +41,7 @@
             line-height: 1.6;
             overflow-x: hidden;
         }
+        
         body.modal-open {
             overflow: hidden;
         }
@@ -46,10 +53,11 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background-color: #fff;
+            background-color: var(--bg-color);
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             z-index: 9999;
             transition: opacity 0.75s ease, visibility 0.75s ease;
         }
@@ -62,6 +70,13 @@
         #preloader img {
             width: 150px;
             animation: pulse 1.5s infinite ease-in-out;
+            margin-bottom: 20px;
+        }
+        
+        .loader-text {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.2rem;
         }
 
         @keyframes pulse {
@@ -77,11 +92,11 @@
             left: 0;
             width: 100%;
             padding: 15px 5%;
-            background: rgba(13, 17, 23, 0.5);
+            background: rgba(13, 17, 23, 0.9);
             backdrop-filter: blur(10px);
             z-index: 1000;
             border-bottom: 1px solid var(--border-color);
-            transition: top 0.3s;
+            transition: top 0.3s, padding 0.3s;
         }
         
         .nav-container {
@@ -119,6 +134,7 @@
             font-weight: 600;
             position: relative;
             padding-bottom: 5px;
+            transition: color 0.3s ease;
         }
 
         .nav-links a::after {
@@ -128,10 +144,14 @@
             left: 0;
             width: 0;
             height: 2px;
-            background-color: var(--primary-color);
+            background: var(--gradient);
             transition: width 0.3s ease;
         }
 
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
         .nav-links a:hover::after {
             width: 100%;
         }
@@ -183,18 +203,11 @@
             text-align: center;
             padding: 40px 20px;
             overflow: hidden;
-            background-image: url('/overall.png');
+            background: linear-gradient(135deg, rgba(13, 17, 23, 0.9) 0%, rgba(22, 27, 34, 0.9) 100%), 
+                        url('/overall.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(13, 17, 23, 0.7);
-            z-index: 1;
         }
         
         .particles {
@@ -213,22 +226,30 @@
 
         .hero-content {
             position: relative;
-            max-width: 800px;
+            max-width: 900px;
             z-index: 3;
             animation: fadeIn 1.5s ease-in-out;
         }
 
         .hero-title {
-            font-size: 4rem;
-            font-weight: 700;
+            font-size: 4.5rem;
+            font-weight: 800;
             color: #fff;
             text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .hero-subtitle {
             font-size: 1.5rem;
             margin-bottom: 30px;
-            color: var(--text-color);
+            color: var(--light-text);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .countdown {
@@ -239,29 +260,40 @@
         }
 
         .time-box {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 15px 20px;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(5px);
-            width: 100px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            width: 120px;
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
         
         .time-box:hover {
             transform: translateY(-10px) scale(1.1);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 140, 0, 0.1);
+            border-color: rgba(255, 140, 0, 0.3);
         }
 
         .time-box span {
             display: block;
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 700;
             color: #fff;
         }
         
+        .time-box p {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            margin-top: 5px;
+        }
+        
         #countdown-message {
-            font-size: 1.5rem; color: #fff; font-weight: 600;
+            font-size: 1.5rem; 
+            color: #fff; 
+            font-weight: 600;
         }
         
         .scroll-down {
@@ -269,7 +301,10 @@
             bottom: 30px; 
             left: 50%;
             transform: translateX(-50%);
-            z-index: 4; color: #fff; font-size: 2.5rem; text-decoration: none;
+            z-index: 4; 
+            color: #fff; 
+            font-size: 2.5rem; 
+            text-decoration: none;
             animation: bounce 2s infinite;
         }
 
@@ -292,6 +327,7 @@
             position: relative;
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.4s ease, background-color 0.3s ease;
+            cursor: pointer;
         }
         .btn:hover {
             transform: translateY(-8px);
@@ -299,13 +335,14 @@
         }
         
         .hero-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
+            background: var(--gradient);
+            border: none;
+            box-shadow: 0 8px 20px rgba(255, 140, 0, 0.3);
         }
         
         .hero-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: var(--gradient);
+            box-shadow: 0 12px 28px rgba(255, 140, 0, 0.4);
         }
         
         .animated-section {
@@ -325,22 +362,43 @@
         }
 
         .section-title {
-            font-size: 2.5rem; margin-bottom: 50px; position: relative; display: inline-block;
+            font-size: 2.5rem; 
+            margin-bottom: 50px; 
+            position: relative; 
+            display: inline-block;
+            color: #fff;
         }
         .section-title::after {
             content: '';
-            width: 60%; height: 4px;
-            background: var(--primary-color);
-            position: absolute; bottom: -10px; left: 50%;
-            transform: translateX(-50%); border-radius: 2px;
+            width: 60%; 
+            height: 4px;
+            background: var(--gradient);
+            position: absolute; 
+            bottom: -10px; 
+            left: 50%;
+            transform: translateX(-50%); 
+            border-radius: 2px;
         }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 50px;
+            color: var(--text-color);
+        }
+        
         .event-container {
-            display: grid; grid-template-columns: 1fr;
-            gap: 30px; max-width: 1000px; margin: 0 auto;
+            display: grid; 
+            grid-template-columns: 1fr;
+            gap: 30px; 
+            max-width: 1200px; 
+            margin: 0 auto;
         }
         
         @media (min-width: 768px) {
-            .event-container { grid-template-columns: repeat(2, 1fr); }
+            .event-container { 
+                grid-template-columns: repeat(2, 1fr); 
+            }
         }
 
         .event-card {
@@ -350,8 +408,11 @@
             padding: 0;
             display: flex; 
             flex-direction: column;
-            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                        box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+                        background 0.3s ease;
             overflow: hidden;
+            position: relative;
         }
 
         .card-poster {
@@ -364,17 +425,30 @@
         .card-content { 
             flex-grow: 1; 
             padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
         
         .event-card:hover {
             transform: translateY(-15px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            background: var(--card-hover);
         }
 
         .card-icon {
-            font-size: 3rem; margin-bottom: 15px;
+            font-size: 3rem; 
+            margin-bottom: 15px;
             transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             color: var(--primary-color);
+            background: var(--gradient-light);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .event-card:hover .card-icon {
@@ -382,10 +456,15 @@
         }
 
         .card-title {
-            font-size: 1.5rem; margin-bottom: 10px; color: #fff;
+            font-size: 1.5rem; 
+            margin-bottom: 10px; 
+            color: #fff;
         }
 
-        .card-description { font-size: 1rem; }
+        .card-description { 
+            font-size: 1rem; 
+            margin-bottom: 20px;
+        }
         
         .btn-details {
             background-color: transparent;
@@ -393,13 +472,12 @@
             padding: 10px 25px;
             align-self: center;
             border: 1px solid var(--primary-color);
-            margin-top: 20px;
+            margin-top: auto;
             text-decoration: none;
             font-weight: 600;
             border-radius: 50px;
             transition: background-color 0.3s ease, color 0.3s ease;
             cursor: pointer;
-            margin-bottom: 20px;
         }
         .btn-details:hover {
             background-color: var(--primary-color);
@@ -433,6 +511,7 @@
             max-width: 700px;
             opacity: 0;
             visibility: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
         }
         .modal.active {
             opacity: 1;
@@ -463,6 +542,10 @@
             background: none;
             font-size: 2.5rem;
             color: var(--text-color);
+            transition: color 0.3s ease;
+        }
+        .close-modal:hover {
+            color: var(--primary-color);
         }
         .modal-body h4 {
             font-size: 1.2rem;
@@ -497,17 +580,17 @@
         .btn-modal-register {
             display: inline-block;
             text-decoration: none;
-            background-color: var(--primary-color);
-            color: var(--bg-color);
+            background: var(--gradient);
+            color: #fff;
             font-weight: 600;
             padding: 10px 25px;
             border-radius: 50px;
-            border: 1px solid var(--primary-color);
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .btn-modal-register:hover {
-            background-color: #ff9d23;
             transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 140, 0, 0.3);
         }
 
         .modal-overlay {
@@ -527,6 +610,53 @@
             visibility: visible;
         }
 
+        /* About Section */
+        .about-section {
+            padding: 80px 20px;
+            background: var(--gradient-light);
+        }
+        
+        .about-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        @media (min-width: 992px) {
+            .about-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .about-text {
+            text-align: left;
+        }
+        
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .about-text p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .about-image {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -562,16 +692,36 @@
                 display: flex;
             }
             
-            .countdown { flex-wrap: wrap; gap: 10px; }
-            .time-box { width: 80px; padding: 10px; }
-            .time-box span { font-size: 1.8rem; }
+            .countdown { 
+                flex-wrap: wrap; 
+                gap: 10px; 
+            }
+            .time-box { 
+                width: 80px; 
+                padding: 15px; 
+            }
+            .time-box span { 
+                font-size: 1.8rem; 
+            }
+            
+            .modal-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .btn-modal-register {
+                align-self: stretch;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
     <div id="preloader">
         <img src="logo.png" alt="Loading...">
+        <div class="loader-text">Loading Hacktoberfest 2025...</div>
     </div>
+    
     <nav class="main-nav">
         <div class="nav-container">
             <a href="#" class="logo">
@@ -580,6 +730,7 @@
             </a>
             <ul class="nav-links">
                 <li><a href="#">Home</a></li>
+                <!-- <li><a href="#about">About</a></li> -->
                 <li><a href="#events">Events</a></li>
             </ul>
             <button class="hamburger-menu" aria-label="Toggle Menu">
@@ -589,23 +740,38 @@
             </button>
         </div>
     </nav>
+    
     <header class="hero">
         <div class="particles" id="particles-container"></div>
         <div class="hero-content">
             <h1 class="hero-title">Hacktoberfest 2k25</h1>
-            <p class="hero-subtitle">Four Events. One Epic Celebration of Code.</p>
+            <p class="hero-subtitle">Four Events. One Epic Celebration of Code, Creativity, and Collaboration.</p>
             <div id="countdown" class="countdown">
-                <div class="time-box"><span id="days">00</span>Days</div>
-                <div class="time-box"><span id="hours">00</span>Hours</div>
-                <div class="time-box"><span id="minutes">00</span>Minutes</div>
-                <div class="time-box"><span id="seconds">00</span>Seconds</div>
+                <div class="time-box"><span id="days">00</span><p>Days</p></div>
+                <div class="time-box"><span id="hours">00</span><p>Hours</p></div>
+                <div class="time-box"><span id="minutes">00</span><p>Minutes</p></div>
+                <div class="time-box"><span id="seconds">00</span><p>Seconds</p></div>
             </div>
-            <a href="#events" class="btn hero-btn">Register for All Events &raquo;</a>
+            <a href="#events" class="btn hero-btn">Explore All Events &raquo;</a>
         </div>
-        <a href="#events" class="scroll-down" aria-label="Scroll to events">&#8595;</a>
+        <a href="#about" class="scroll-down" aria-label="Scroll to about section">&#8595;</a>
     </header>
 
-    <main id="events" class="animated-section">
+    <!-- <section id="about" class="about-section animated-section">
+        <div class="about-content scroll-animated">
+            <div class="about-text">
+                <h2>What is Hacktoberfest?</h2>
+                <p>Hacktoberfest is a month-long celebration of open source software run by DigitalOcean in partnership with GitHub and other companies. It's a global event that encourages participation in giving back to the open source community.</p>
+                <p>At Digiflash, we're taking this opportunity to host a series of exciting events that combine coding challenges, creative thinking, and team collaboration. Whether you're a seasoned developer or just starting your journey, there's something for everyone!</p>
+                <p>Join us for four unique events that will test your skills, expand your knowledge, and connect you with like-minded individuals in the tech community.</p>
+            </div>
+            <div class="about-image scroll-animated">
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Coding and Collaboration">
+            </div>
+        </div>
+    </section> -->
+
+  <main id="events" class="animated-section">
         <h2 class="section-title scroll-animated">The Main Events</h2>
         <div class="event-container">
             <div class="event-card scroll-animated">
@@ -728,7 +894,6 @@
         </div>
     </div>
     
-    
     <div id="modal-overlay" class="modal-overlay"></div>
 
     <script>
@@ -844,6 +1009,18 @@
                     container.appendChild(particle);
                 }
             }
+            
+            // --- NAVBAR SCROLL EFFECT ---
+            window.addEventListener('scroll', () => {
+                const nav = document.querySelector('.main-nav');
+                if (window.scrollY > 50) {
+                    nav.style.padding = '10px 5%';
+                    nav.style.background = 'rgba(13, 17, 23, 0.95)';
+                } else {
+                    nav.style.padding = '15px 5%';
+                    nav.style.background = 'rgba(13, 17, 23, 0.9)';
+                }
+            });
         };
     </script>
 </body>
